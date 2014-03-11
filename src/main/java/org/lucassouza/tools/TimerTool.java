@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
  *
  * @author Lucas Souza <sorackb@gmail.com>
  */
-public class Timer {
+public class TimerTool {
   private final LinkedHashMap<Object, Long> starts;
   
   public enum TimeUnit {
@@ -32,7 +32,7 @@ public class Timer {
     }
   }
   
-  public Timer() {
+  public TimerTool() {
     this.starts = new LinkedHashMap<>();
   }
   
