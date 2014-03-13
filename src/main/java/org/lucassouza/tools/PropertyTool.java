@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.lucassouza.tools;
 
 import java.io.IOException;
@@ -16,20 +11,26 @@ import java.util.Properties;
 public class PropertyTool {
 
   private Properties properties;
+  private String completePath;
 
-  public void readPropertieFile(String completePath) throws IOException {
+  public void readPropertyFile(String completePath) throws IOException {
     FileTool fileTool = new FileTool();
-    properties = new Properties();
-
     String fileContent = fileTool.fileToString(completePath);
-    properties.load(new StringReader(fileContent.replace("\\", "\\\\")));
+
+    this.completePath = completePath;
+    this.properties = new Properties();
+    this.properties.load(new StringReader(fileContent.replace("\\", "\\\\")));
   }
 
-  public String getProperty(String propertieKey) {
-    return properties.getProperty(propertieKey);
+  public void setProperty(String key, String value) {
+    this.properties.setProperty(key, value);
   }
 
-  public String getProperty(String propertieKey, String defaultValue) {
-    return properties.getProperty(propertieKey, defaultValue);
+  public String getProperty(String key) {
+    return this.properties.getProperty(key);
+  }
+
+  public String getProperty(String key, String defaultValue) {
+    return this.properties.getProperty(key, defaultValue);
   }
 }
