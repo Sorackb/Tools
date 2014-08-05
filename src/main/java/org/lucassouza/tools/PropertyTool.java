@@ -11,13 +11,11 @@ import java.util.Properties;
 public class PropertyTool {
 
   private Properties properties;
-  private String completePath;
 
   public void readPropertyFile(String completePath) throws IOException {
     FileTool fileTool = new FileTool();
     String fileContent = fileTool.fileToString(completePath);
 
-    this.completePath = completePath;
     this.properties = new Properties();
     this.properties.load(new StringReader(fileContent.replace("\\", "\\\\")));
   }
