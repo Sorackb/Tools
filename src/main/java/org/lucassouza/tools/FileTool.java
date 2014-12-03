@@ -7,7 +7,7 @@ import java.io.IOException;
 
 /**
  *
- * @author Lucas Souza <sorackb@gmail.com>
+ * @author Lucas Souza [sorackb@gmail.com]
  */
 public class FileTool {
 
