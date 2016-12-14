@@ -1,66 +1,50 @@
 package org.lucassouza.tools;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Scanner;
-
 /**
  *
- * @author sarxos[https://github.com/sarxos/secure-tokens/blob/master/src/main/java/com/github/sarxos/securetoken/impl/Hardware4Win.java]
- * Fullt copied from https://github.com/sarxos/secure-tokens/blob/master/src/main/java/com/github/sarxos/securetoken/impl/Hardware4Win.java
+ * @author Lucas Souza [sorackb@gmail.com]
  */
 public class Hardware4Win {
 
-  private static String serialNumber = null;
+  public enum WMICType {
+    BIOS("bios", "serialnumber"),
+    BASEBOARD("baseboard", "serialnumber"),
+    HD("diskdrive", "serialnumber"),
+    OS("os", "serialnumber");
 
-  public static void main(String[] args) {
-    System.out.println(getSerialNumber());
+    private final String type;
+    private final String information;
+
+    private WMICType(String command, String information) {
+      this.type = command;
+      this.information = information;
+    }
+
+    public String getType() {
+      return this.type;
+    }
+
+    public String getInformation() {
+      return this.information;
+    }
   }
 
-  public static final String getSerialNumber() {
-    OutputStream os;
-    InputStream is;
-    Runtime runtime;
-    Process process;
-    Scanner sc;
+  private static String serialNumber = null;
+
+  public static String getSerialNumber(WMICType wmicType) {
+    String[] lines;
 
     if (serialNumber != null) {
       return serialNumber;
     }
 
-    try {
-      runtime = Runtime.getRuntime();
-      process = null;
-      process = runtime.exec(new String[]{"wmic", "bios", "get", "serialnumber"});
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    lines = CMD.execute("wmic " + wmicType.getType() + " get " + wmicType.getInformation()).split("\n");
 
-    os = process.getOutputStream();
-    is = process.getInputStream();
+    for (String line : lines) {
+      line = line.trim();
 
-    try {
-      os.close();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-
-    sc = new Scanner(is);
-
-    try {
-      while (sc.hasNext()) {
-        String next = sc.next();
-        if ("SerialNumber".equals(next)) {
-          serialNumber = sc.next().trim();
-          break;
-        }
-      }
-    } finally {
-      try {
-        is.close();
-      } catch (IOException e) {
-        throw new RuntimeException(e);
+      if (!line.isEmpty()) {
+        serialNumber = line.trim();
       }
     }
 
