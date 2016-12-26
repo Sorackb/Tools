@@ -24,9 +24,11 @@ public class Herald {
     OBSERVERS.remove(observer);
   }
 
-  public static void notify(Level level, String message) {
+  public static void notify(MessageType type, String message) {
+    System.out.println(type + ": " + message);
+
     OBSERVERS.forEach(observer -> {
-      observer.notify(level, message);
+      observer.notify(type, message);
     });
   }
 }
