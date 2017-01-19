@@ -25,8 +25,6 @@ public class Herald {
   }
 
   public static void notify(MessageType type, String message) {
-    System.out.println(type + ": " + message);
-
     OBSERVERS.forEach(observer -> {
       observer.notify(type, message);
     });
